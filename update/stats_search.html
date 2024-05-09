@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAM Academy Player Search</title>
+  <style>
+    /* Add your own styles here */
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .search-container {
+      position: relative; /* Ensure relative positioning for absolute positioning of suggestions */
+      display: flex; /* Enable flexbox layout */
+    }
+
+    .search-box {
+      padding: 10px;
+      border: 2px solid black;
+      border-radius: 5px;
+      margin-right: 10px; /* Add right margin to create space for the search button */
+      font-size: 16px;
+      width: 300px;
+    }
+
+    .search-button {
+      padding: 10px 20px;
+      background-color: black;
+      color: white;
+      border: 1px solid black;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .search-button:hover {
+      background-color: white;
+      color: black;
+      transition: background-color 0.3s;
+    }
+
+    .suggestion-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      position: absolute;
+      background-color: white;
+      border: 1px solid white;
+      border-radius: 5px;
+      width: 300px;
+      z-index: 1;
+      top: calc(100% + 5px); /* Position suggestion box below the search box */
+      left: 0; /* Align suggestion box with the left edge of the search box */
+    }
+
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .suggestion-item:hover {
+      background-color: black;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h2>Search Players</h2>
+  <div class="search-container">
+    <input type="text" id="playerName" class="search-box" name="playerName" placeholder="Enter player name..." onkeyup="showSuggestions(this.value)">
+    <button type="button" class="search-button" onclick="submitForm()">Search</button>
+    <div id="suggestions" class="suggestion-list"></div> <!-- Suggestions will be displayed here -->
+  </div>
+
+  <script>
+    function showSuggestions(str) {
+      if (str.trim() === "") {
+        document.getElementById("suggestions").innerHTML = "";
+        return;
+      } else {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("suggestions").innerHTML = this.responseText;
+          }
+        };
+        xhttp.open("GET", "stats_search.php?playerName=" + str.trim(), true);
+        xhttp.send();
+      }
+    }
+
+    function submitForm() {
+      var playerName = document.getElementById("playerName").value.trim();
+      if (playerName !== "") {
+        window.location.href = "player_stats_info.html?playerName=" + playerName;
+      }
+    }
+
+    // Function to fill search box with clicked suggestion
+    document.getElementById("suggestions").addEventListener("click", function(event) {
+      var playerName = event.target.textContent.trim();
+      if (playerName !== "") {
+        document.getElementById("playerName").value = playerName;
+        document.getElementById("suggestions").innerHTML = ""; // Hide suggestions after selecting one
+      }
+    });
+  </script>
+</body>
+</html>

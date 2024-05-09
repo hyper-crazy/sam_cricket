@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAM Cricket Academy</title>
+  <style>
+    /* Add your own styles here */
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 50px; /* Adjust margin as needed */
+    }
+
+    h1 {
+      font-size: 50px;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      gap: 20px; /* Adjust gap between buttons as needed */
+      margin: 0 auto; /* Center the button group horizontally */
+    }
+    
+    .main-button,
+    .sub-button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .main-button {
+      background-color: #eee;
+      color: black;
+      border: 1px solid black;
+      display: inline-block; /* Display sub-buttons in a row */
+      margin: 0 5px; /* Adjust margin between sub-buttons */
+      transition: background-color 0.5s; /* Add transition effect for opacity */
+    }
+
+    .main-button:hover {
+      background-color: black;
+      color: white;
+      opacity: 1; /* Reduce opacity on hover */
+      transition: background-color 0.3s;
+    }
+
+    .main-button.selected {
+      background-color: black;
+      color: white;
+      
+    }
+
+    .sub-button {
+      background-color: black;
+      color: white;
+      border: 1px solid black; /* Add black border to sub-buttons */
+      display: inline-block; /* Display sub-buttons in a row */
+      margin: 0 5px; /* Adjust margin between sub-buttons */
+      transition: background-color 0.5s; /* Add transition effect for background color */
+    }
+
+    .sub-button:hover {
+      background-color: #eee;
+      color: black;
+      opacity: 1; /* Reduce opacity on hover */
+      transition: background-color 0.3s;
+    }
+
+    /* Ensure the sub-button container stays hidden initially */
+    .sub-button-container {
+      display: none;
+      position: relative; /* Position it relative to the parent */
+      margin-top: 5px; /* Adjust spacing between main buttons and sub-buttons */
+      width: fit-content; /* Match width of main button container */
+      margin-left: auto; /* Center the sub-button container horizontally */
+      margin-right: auto;
+    }
+
+    /* Add styles for logout button */
+    .logout-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .logout-button:hover {
+      background-color: white;
+      color: black;
+      border: 1px solid black;
+      transition: background-color 0.3s; /* Add transition effect for opacity */
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>SAM Cricket Academy</h1>
+  </header>
+  
+  <div class="button-container">
+    <button class="main-button" data-sub-buttons="player">Players</button>
+    <button class="main-button" data-sub-buttons="career">Career</button>
+    <button class="main-button" data-sub-buttons="coach">Coaches</button>
+  </div>
+  <div class="sub-button-container"></div>
+
+  <!-- Logout button -->
+  <button class="logout-button" onclick="logout()">Logout</button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const mainButtons = document.querySelectorAll('.main-button');
+      const subButtonContainer = document.querySelector('.sub-button-container');
+      let currentMainButton = null;
+
+      mainButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const subButtonData = button.getAttribute('data-sub-buttons');
+
+          if (currentMainButton !== button) {
+            // Remove the 'selected' class from all main buttons
+            mainButtons.forEach(btn => {
+              btn.classList.remove('selected');
+            });
+            // Set the 'selected' class to the clicked main button
+            button.classList.add('selected');
+
+            // Clear previous sub-buttons and show new ones
+            subButtonContainer.innerHTML = '';
+            currentMainButton = button;
+
+            if (subButtonData === 'player') {
+              // Create sub-buttons for cricketer
+              const subButtons = ['Registration','All Players', 'Players Info'];
+              subButtons.forEach(subButtonName => {
+                const subButton = document.createElement('button');
+                subButton.classList.add('sub-button');
+                subButton.textContent = subButtonName;
+                // Add functionality for each sub-button here
+                if (subButtonName === 'Registration') {
+                  subButton.addEventListener('click', () => {
+                    window.location.href = 'players/players_registration_form.html'; // Redirect to "players_registration_form.html"
+                  });
+                } else if (subButtonName === 'All Players') {
+                  subButton.addEventListener('click', () => {
+                    window.location.href = 'players/all_players.html';
+                  });
+                } else if (subButtonName === 'Players Info') {
+                  subButton.addEventListener('click', () => {
+                    window.location.href = 'players/search_player.html'; // Redirect to "players_info.html"
+                  });
+                } else {
+                  subButton.addEventListener('click', () =>{
+                    console.log("Clicked " + subButtonName);
+                  });
+                }
+                subButtonContainer.appendChild(subButton);
+              });
+
+            } else if (subButtonData === 'career') {
+              // Create sub-buttons for career
+              const subButtons = ['Update', 'Player Stats'];
+              subButtons.forEach(subButtonName => {
+                const subButton = document.createElement('button');
+                subButton.classList.add('sub-button');
+                subButton.textContent = subButtonName;
+                // Add functionality for each sub-button here
+                if (subButtonName === 'Update') {
+                  subButton.addEventListener('click', () => {
+                    window.location.href = 'update/player_stats_update_form.html'; //Redirect to "player_stats_update_form.html"
+                  });
+                } else if (subButtonName === 'Player Stats') {
+                  subButton.addEventListener('click', () =>{
+                    window.location.href = 'update/stats_search.html'; //Redirect to "stats_search.html"
+                  });
+                } else {
+                  subButton.addEventListener('click', () => {
+                    console.log("Clicked " + subButtonName);
+                    //Perform actions when sub-button is clicked
+                  });
+                }
+                subButtonContainer.appendChild(subButton);
+              });
+              
+            } else if (subButtonData === 'coach') {
+              // Create sub-buttons for achivements
+              const subButtons = ['Registration', 'All Coaches', 'Coaches Info'];
+              subButtons.forEach(subButtonName => {
+                const subButton = document.createElement('button');
+                subButton.classList.add('sub-button');
+                subButton.textContent = subButtonName;
+                // Add functionality for each sub-button here
+                if (subButtonName === 'Registration') {
+                  subButton.addEventListener('click', () => {
+                    window.location.href = 'coaches/coaches_registration_form.html'; //Redirect to "coaches_registration_form.html"
+                  });
+                } else if (subButtonName === 'All Coaches') {
+                  subButton.addEventListener('click', () => {
+                    window.location.href = 'coaches/all_coaches.html';
+                  });
+                } else if (subButtonName === 'Coaches Info') {
+                  subButton.addEventListener('click', () =>{
+                    window.location.href = 'coaches/search_coach.html'; //Redirect to "coaches_info.html"
+                  });
+                } else {
+                  subButton.addEventListener('click', () => {
+                    console.log("clicked " + subButtonName);
+                    //Perform actions when sub-button is clicked
+                  });
+                }
+                subButtonContainer.appendChild(subButton);
+              });
+            }
+
+            // Show the sub-button container
+            subButtonContainer.style.display = 'block';
+          } else {
+            // Toggle the display of sub-buttons when clicking the same main button again
+            if (subButtonContainer.style.display === 'block') {
+              subButtonContainer.style.display = 'none';
+              button.classList.remove('selected');
+            } else {
+              subButtonContainer.style.display = 'block';
+              button.classList.add('selected');
+            }
+          }
+        });
+      });
+    });
+
+    // Function to logout
+    function logout() {
+      // Redirect to login page
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

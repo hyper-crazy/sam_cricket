@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Stats</title>
+    <style>
+        /* Add your own styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            border: 1px solid black;
+            border-radius: 5px;
+            transition: background-color 0.5s; /* Add transition effect for fill */
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: black;
+            color: white;
+        }
+
+        #message {
+            margin-top: 10px;
+            color: green;
+        }
+
+        /* Hide fields by default */
+        .batting-fields,
+        .bowling-fields {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Update Stats</h2>
+        <form id="UpdateForm" action="player_stats_update_process.php" method="post">
+
+            <div class="form-group">
+                <label for="format">Format:</label>
+                <select id="format" name="Format" required>
+                    <option value="" selected>Select Format</option>
+                    <option value="odi">ODI</option>
+                    <option value="t20">T20</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="player_id">Player ID:</label>
+                <input type="number" id="player_id_input" name="PlayerID" onchange="fetchPlayerData()" required>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="Name" readonly>
+            </div>
+
+            <div class="form-group">
+                <label for="match_no">Match No:</label>
+                <input type="number" id="match_no" name="MatchNo" readonly required>
+            </div>
+
+            <div class="form-group">
+                <label for="match_date">Match Date:</label>
+                <input type="date" id="match_date" name="MatchDate" required>
+            </div>
+
+            <div class="form-group" id="performance">
+                <label for="performance_select">Performance:</label>
+                <select id="performance_select" name="Performance" onchange="toggleFields()" required>
+                    <option value="" selected>Select Option</option>
+                    <option value="Batting">Batting</option>
+                    <option value="Bowling">Bowling</option>
+                    <option value="All_Round">All-Round</option>
+                </select>
+            </div>
+
+            <!-- Batting -->
+            <div class="form-group batting-fields" id="batting">
+                <label for="innings">Innings:</label>
+                <input type="number" id="innings" name="Innings" readonly required>
+                <label for="runs">Runs:</label>
+                <input type="number" id="runs" name="Runs" onchange="calculateSR()">
+                <label for="balls">Balls:</label>
+                <input type="number" id="balls" name="Balls" onchange="calculateSR()">
+
+                <label for="dcentury">Double-Century:</label>
+                <select id="dcentury" name="DoubleCentury">
+                    <option value="" selected>Select Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+
+                <label for="century">Century:</label>
+                <select id="century" name="Century">
+                    <option value="" selected>Select Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+
+                <label for="half_century">Half-Century:</label>
+                <select id="half_century" name="HalfCentury">
+                    <option value="" selected>Select Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+
+                <label for="sixes">Sixes:</label>
+                <input type="number" id="sixes" name="Sixes">
+                <label for="four">Fours:</label>
+                <input type="number" id="four" name="Fours">
+
+                <label for="sr">Strike Rate</label>
+                <input type="number" id="sr" name="SR" step="any" readonly>
+            </div>
+
+            <!-- Bowling -->
+            <div class="form-group bowling-fields" id="bowling">
+                <label for="overs">Overs:</label>
+                <input type="number" id="overs" name="Overs" onchange="calculateER()">
+                <label for="wickets">Wickets:</label>
+                <input type="number" id="wickets" name="Wickets">
+                <label for="runs_given">Runs Given:</label>
+                <input type="number" id="runs_given" name="RunsGiven" onchange="calculateER()">
+                <label for="er">Eeonomy Rate:</label>
+                <input type="number" id="er" name="ER" step="any" readonly>
+
+                <label for="ten_w">10w Haul:</label>
+                <select id="ten_w" name="ten_w">
+                    <option value="" selected>Select Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+
+                <label for="five_w">5w Haul:</label>
+                <select id="five_w" name="five_w">
+                    <option value="" selected>Select Option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <input type="submit" value="Submit">
+            <p id="message"></p>
+        </form>
+    </div>
+
+    <script>
+        // Set default value of match_date to current date
+        var currentDate = new Date().toISOString().split('T')[0];
+        document.getElementById("match_date").value = currentDate;
+
+        // Function to fetch player name, match number, and innings based on player ID and format
+        function fetchPlayerData() {
+            var playerId = document.getElementById("player_id_input").value;
+            var format = document.getElementById("format").value;
+
+            if (playerId.trim() !== '' && format.trim() !== '') {
+                // AJAX request to fetch player name, match number, and innings
+                var xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            displayPlayerData(response);
+                        } else {
+                            console.error('Error:', xhr.statusText);
+                        }
+                    }
+                };
+                xhr.open('GET', 'assign_player_data.php?player_id=' + playerId + '&format=' + format, true);
+                xhr.send();
+            }
+        }
+
+        // Function to display player name, match number, and innings
+        function displayPlayerData(response) {
+            var nameField = document.getElementById("name");
+            var matchNoField = document.getElementById("match_no");
+            var inningsField = document.getElementById("innings");
+
+            if (response && response.Name) {
+                nameField.value = response.Name;
+            } else {
+                nameField.value = ''; // Clear name field if no name is found
+            }
+
+            if (response && response.MatchNo) {
+                matchNoField.value = response.MatchNo + 1;
+            } else {
+                matchNoField.value = 1; // Clear match number field if no match number is found
+            }
+
+            if (response && response.Innings) {
+                inningsField.value = response.Innings + 1;
+            } else {
+                inningsField.value = 1; // Clear innings field if no innings is found
+            }
+        }
+
+        // Function to toggle batting and bowling fields based on performance selection
+        function toggleFields() {
+            var performanceField = document.getElementById("performance_select");
+            var battingFields = document.getElementById("batting");
+            var bowlingFields = document.getElementById("bowling");
+
+            if (performanceField.value === "Batting") {
+                battingFields.style.display = "block";
+                bowlingFields.style.display = "none";
+            } else if (performanceField.value === "Bowling") {
+                battingFields.style.display = "none";
+                bowlingFields.style.display = "block";
+            } else if (performanceField.value === "All_Round") {
+                battingFields.style.display = "block";
+                bowlingFields.style.display = "block";
+            } else {
+                battingFields.style.display = "none";
+                bowlingFields.style.display = "none";
+            }
+        }
+
+        // Function to calculate Strike Rate based on runs and balls
+        function calculateSR() {
+            var runs = parseInt(document.getElementById("runs").value);
+            var balls = parseInt(document.getElementById("balls").value);
+            var srField = document.getElementById("sr");
+
+            if (!isNaN(runs) && !isNaN(balls) && balls !== 0) {
+                var sr = (runs / balls) * 100;
+                srField.value = sr.toFixed(2); // Display SR with two decimal places
+            } else {
+                srField.value = ''; // Clear SR field if runs or balls are not valid
+            }
+        }
+
+        //Funtion to calculate Economy Rate based on overs and runs_given
+        function calculateER() {
+            var overs = parseInt(document.getElementById("overs").value);
+            var runs_given = parseInt(document.getElementById("runs_given").value);
+            var erField = document.getElementById("er");
+
+            if (!isNaN(overs) &&!isNaN(runs_given) && overs!== 0) {
+                var er = (runs_given / overs).toFixed(2);
+                erField.value = er;
+            } else {
+                erField.value = '';
+            }
+        }
+    
+    </script>
+</body>
+</html>

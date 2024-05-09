@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAM Cricket Academy</title>
+  <style>
+    /* Add your own styles here */
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+  
+    .header {
+      text-align: center;
+      margin-bottom: 25px; /* Adjust margin as needed */
+    }
+  
+    h1 {
+      font-size: 50px;
+    }
+  
+    .form-container {
+      margin-bottom: 50px;
+      padding: 50px;
+      width: 250px; /* Adjust the width of the form container */
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+    }
+  
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+  
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box; /* Include padding and border in the width calculation */
+    }
+  
+    .password-container {
+      position: relative;
+    }
+  
+    #togglePassword {
+      position: absolute;
+      top: 50%;
+      right: 3px;
+      transform: translateY(-111%);
+      cursor: pointer;
+      border: none;
+      background-color: transparent;
+    } 
+  
+    input[type="submit"],
+    .login-button,
+    .signup-button {
+      width: 100%; /* Make the submit button stretch to fill the container */
+      padding: 10px; /* Adjust padding as needed */
+      border: 1px solid black; /* Add black border to the button */
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #eee;
+      color: black;
+      transition: background-color 0.5s; /* Add transition effect for opacity */
+      text-decoration: none;
+    }
+
+    input[type="submit"]:hover,
+    .login-button:hover,
+    .signup-button:hover {
+      background-color: black;
+      color: white;
+    }
+
+    .divider-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .divider-line {
+      flex-grow: 1;
+      height: 1px;
+      background-color: #ccc;
+    }
+
+    .or-text {
+      margin: 15px 10px;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>SAM Cricket Academy</h1>
+  </header>
+  <div class="form-container">
+    <h2>Login</h2>
+    <form action="login.php" method="post">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required><br>
+      <label for="password">Password:</label>
+      <div class="password-container">
+        <input type="password" id="password" name="password" required>
+        <button type="button" id="togglePassword">Show</button>
+      </div>
+      <input type="submit" value="Login">
+    </form>
+    <div class="divider-container">
+      <div class="divider-line"></div>
+      <div class="or-text">OR</div>
+      <div class="divider-line"></div>
+    </div>
+    <form action="signup.html" method="post">
+      <input type="submit" value="Signup">
+    </form>
+  </div>
+
+  <script>
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordField = document.getElementById('password');
+
+    togglePassword.addEventListener('click', function() {
+      const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordField.setAttribute('type', type);
+      this.textContent = type === 'password' ? 'Show' : 'Hide';
+    });
+  </script>
+</body>
+</html>

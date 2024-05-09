@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
+            margin-top: 17px;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 0px;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .player-info, 
+        .odi-stats, 
+        .t20-stats {
+            margin-bottom: 5px;
+            border: 1px solid black;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .player-info-item, 
+        .player-odi-stats-item, 
+        .player-t20-stats-item {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .player-info-item strong, 
+        .player-odi-stats-item strong, 
+        .player-t20-stats-item strong {
+            width: 100px;
+        }
+        .player-info-item span, 
+        .player-odi-stats-item span, 
+        .player-t20-stats-item span {
+            flex: 1;
+            text-align: right;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .btn-container button {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.5s;
+        }
+        .btn-container :hover {
+            background-color: black;
+            color: white;
+            opacity: 1; /* Reduce opacity on hover */
+            transition: background-color 0.3s;
+        }
+        .btn-container button.active {
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Player Information -->
+        <div class="player-info">
+            <h1 id="pageTitle">Player Information</h1>
+            <div class="player-info-item">
+                <strong>Name:</strong>
+                <span id="playerName"></span>
+            </div>
+            <div class="player-info-item">
+                <strong>Age:</strong>
+                <span id="playerAge"></span>
+            </div>
+            <div class="player-info-item">
+                <strong>Gender:</strong>
+                <span id="playerGender"></span>
+            </div>
+            <div class="player-info-item">
+                <strong>Role:</strong>
+                <span id="playerRole"></span>
+            </div>
+            <div class="player-info-item">
+                <strong>Grade:</strong>
+                <span id="playerGrade"></span>
+            </div>
+        </div>
+
+        <!-- Buttons for switching between ODI and T20 stats -->
+        <div class="btn-container">
+            <button id="btnODI" class="active">ODI</button>
+            <button id="btnT20">T20</button>
+        </div>
+        
+        <!-- ODI Statistics -->
+        <div class="odi-stats">
+            <h2>ODI Statistics</h2>
+            <div class="player-odi-stats-item">
+                <strong>Matches:</strong>
+                <span id="odiMatchNo"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Innings:</strong>
+                <span id="odiInnings"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Runs:</strong>
+                <span id="odiRuns"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Average:</strong>
+                <span id="odiAverage"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Double Hundreds:</strong>
+                <span id="odid_hun"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Hundreds:</strong>
+                <span id="odihun"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Fifties:</strong>
+                <span id="odih_hun"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Sixes:</strong>
+                <span id="odiSixes"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Fours:</strong>
+                <span id="odiFours"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Strike Rate:</strong>
+                <span id="odiSR"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Overs:</strong>
+                <span id="odiOvers"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Wickets:</strong>
+                <span id="odiWickets"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>Economy Rate:</strong>
+                <span id="odiER"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>10w Hauls:</strong>
+                <span id="oditen_w"></span>
+            </div>
+            <div class="player-odi-stats-item">
+                <strong>5w Hauls:</strong>
+                <span id="odifive_w"></span>
+            </div>
+            <!-- Add more ODI stats here -->
+        </div>
+        
+        <!-- T20 Statistics -->
+        <div class="t20-stats">
+            <h2>T20 Statistics</h2>
+            <div class="player-t20-stats-item">
+                <strong>Matches:</strong>
+                <span id="t20MatchNo"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Innings:</strong>
+                <span id="t20Innings"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Runs:</strong>
+                <span id="t20Runs"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Average:</strong>
+                <span id="t20Average"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Double Hundreds:</strong>
+                <span id="t20d_hun"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Hundreds:</strong>
+                <span id="t20hun"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Fifties:</strong>
+                <span id="t20h_hun"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Sixes:</strong>
+                <span id="t20Sixes"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Fours:</strong>
+                <span id="t20Fours"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Strike Rate:</strong>
+                <span id="t20SR"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Overs:</strong>
+                <span id="t20Overs"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Wickets:</strong>
+                <span id="t20Wickets"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>Economy Rate:</strong>
+                <span id="t20ER"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>10w Hauls:</strong>
+                <span id="t20ten_w"></span>
+            </div>
+            <div class="player-t20-stats-item">
+                <strong>5w Hauls:</strong>
+                <span id="t20five_w"></span>
+            </div>
+            <!-- Add more t20 stats here -->
+        </div>
+        
+    </div>
+
+    <script>
+        // Retrieve player name from URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const playerName = urlParams.get('playerName');
+        
+        // Fetch player information from ppi.php
+        fetch(`ppi.php?playerName=${encodeURIComponent(playerName)}`)
+        .then(response => response.json())
+        .then(playerInfo => {
+            document.getElementById("playerName").textContent = playerInfo.Name;
+            document.getElementById("playerAge").textContent = playerInfo.Age;
+            document.getElementById("playerGender").textContent = playerInfo.Gender;
+            document.getElementById("playerRole").textContent = playerInfo.Role;
+            document.getElementById("playerGrade").textContent = playerInfo.Grade;
+        })
+        .catch(error => console.error('Error fetching player information:', error));
+
+        // Function to toggle between ODI and T20 stats
+        function toggleStats(statType) {
+            // Hide both stats containers
+            document.querySelector('.odi-stats').style.display = 'none';
+            document.querySelector('.t20-stats').style.display = 'none';
+
+            // Deactivate both buttons
+            document.getElementById('btnODI').classList.remove('active');
+            document.getElementById('btnT20').classList.remove('active');
+
+            // Show the selected stats container and activate the corresponding button
+            if (statType === 'ODI') {
+                document.querySelector('.odi-stats').style.display = 'block';
+                document.getElementById('btnODI').classList.add('active');
+            } else if (statType === 'T20') {
+                document.querySelector('.t20-stats').style.display = 'block';
+                document.getElementById('btnT20').classList.add('active');
+            }
+        }
+
+        // Fetch ODI statistics from pso.php
+        fetch(`pso.php?playerName=${encodeURIComponent(playerName)}`)
+        .then(response => response.json())
+        .then(odiStats => {
+            // Display ODI stats
+            document.getElementById("odiMatchNo").textContent = odiStats.odiMatchNo;
+            document.getElementById("odiInnings").textContent = odiStats.odiInnings;
+            document.getElementById("odiRuns").textContent = odiStats.odiRuns;
+            document.getElementById("odiAverage").textContent = parseFloat(odiStats.odiAverage).toFixed(2); // Adjust decimal points
+            document.getElementById("odid_hun").textContent = odiStats.odid_hun;
+            document.getElementById("odihun").textContent = odiStats.odihun;
+            document.getElementById("odih_hun").textContent = odiStats.odih_hun;
+            document.getElementById("odiSixes").textContent = odiStats.odiSixes;
+            document.getElementById("odiFours").textContent = odiStats.odiFours;
+            document.getElementById("odiSR").textContent = parseFloat(odiStats.odiSR).toFixed(2); // Adjust decimal points
+            document.getElementById("odiOvers").textContent = odiStats.odiOvers;
+            document.getElementById("odiWickets").textContent = odiStats.odiWickets;
+            document.getElementById("odiER").textContent = parseFloat(odiStats.odiER).toFixed(2); // Adjust decimal points
+            document.getElementById("oditen_w").textContent = odiStats.oditen_w;
+            document.getElementById("odifive_w").textContent = odiStats.odifive_w;
+        })
+        .catch(error => console.error('Error fetching ODI statistics:', error));
+
+        // Fetch T20 statistics from pst.php
+        fetch(`pst.php?playerName=${encodeURIComponent(playerName)}`)
+        .then(response => response.json())
+        .then(t20Stats => {
+            // Display T20 stats
+            document.getElementById("t20MatchNo").textContent = t20Stats.t20MatchNo;
+            document.getElementById("t20Innings").textContent = t20Stats.t20Innings;
+            document.getElementById("t20Runs").textContent = t20Stats.t20Runs;
+            document.getElementById("t20Average").textContent = parseFloat(t20Stats.t20Average).toFixed(2); // Adjust decimal points
+            document.getElementById("t20d_hun").textContent = t20Stats.t20d_hun;
+            document.getElementById("t20hun").textContent = t20Stats.t20hun;
+            document.getElementById("t20h_hun").textContent = t20Stats.t20h_hun;
+            document.getElementById("t20Sixes").textContent = t20Stats.t20Sixes;
+            document.getElementById("t20Fours").textContent = t20Stats.t20Fours;
+            document.getElementById("t20SR").textContent = parseFloat(t20Stats.t20SR).toFixed(2); // Adjust decimal points
+            document.getElementById("t20Overs").textContent = t20Stats.t20Overs;
+            document.getElementById("t20Wickets").textContent = t20Stats.t20Wickets;
+            document.getElementById("t20ER").textContent = parseFloat(t20Stats.t20ER).toFixed(2); // Adjust decimal points
+            document.getElementById("t20ten_w").textContent = t20Stats.t20ten_w;
+            document.getElementById("t20five_w").textContent = t20Stats.t20five_w;
+        })
+        .catch(error => console.error('Error fetching T20 statistics:', error));
+
+        // Initial load: Display ODI stats by default
+        toggleStats('ODI');
+
+        // Event listeners for the ODI and T20 buttons
+        document.getElementById('btnODI').addEventListener('click', () => toggleStats('ODI'));
+        document.getElementById('btnT20').addEventListener('click', () => toggleStats('T20'));
+    </script>
+</body>
+</html>

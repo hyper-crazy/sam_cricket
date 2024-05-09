@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Information</title>
+  <style>
+    /* Add your own styles here */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: white;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      max-width: 333px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .player-info {
+      margin-top: 20px;
+    }
+
+    .player-info-item {
+      margin-bottom: 10px;
+    }
+
+    .search-back {
+      position: absolute;
+      bottom: 0;
+      left: 100;
+      transform: translateY(-350%);
+      text-align: center; /* Center the button horizontally */
+    }
+
+    .back-button {
+      position: absolute;
+      bottom: 0;
+      left: 100;
+      transform: translateY(-200%);
+      text-align: center; /* Center the button horizontally */
+    }
+    
+    .search-back button,
+    .back-button button {
+      padding: 10px 20px;
+      background-color: black;
+      color: white;
+      border: 1px solid black;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      display: block; /* Ensure the button takes full width */
+      margin: 0 auto; /* Center the button horizontally */
+    }
+    
+    .search-back button:hover,
+    .back-button button:hover {
+      background-color: white;
+      color: black;
+      transition: background-color 0.3s;
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Player Information</h1>
+    <div class="player-info">
+      <div class="player-info-item">
+        <strong>Name:</strong>
+        <span id="playerName"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Age:</strong>
+        <span id="playerAge"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Gender:</strong>
+        <span id="playerGender"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Father Name:</strong>
+        <span id="playerFN"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Mother Name:</strong>
+        <span id="playerMN"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Role:</strong>
+        <span id="playerRole"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Batting Hand:</strong>
+        <span id="playerBatH"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Bowling Hand:</strong>
+        <span id="playerBowlH"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Grade:</strong>
+        <span id="playerGrade"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Date of Birth:</strong>
+        <span id="playerDOB"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Email:</strong>
+        <span id="playerEmail"></span>
+      </div>
+      <div class="player-info-item">
+        <strong>Phone Number:</strong>
+        <span id="playerPhone"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- buttons -->
+  <div class="search-back">
+    <button onclick="goBackSearch()">Back to Search</button>
+  </div>
+  <div class="back-button">
+    <button onclick="goBackHome()">Back to Home</button>
+  </div>
+  
+  <script>
+    // Retrieve player name from URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const playerName = urlParams.get('playerName');
+
+    // Fetch player details from the server using playerName
+    fetch(`player_info.php?playerName=${encodeURIComponent(playerName)}`)
+      .then(response => response.json())
+      .then(playerDetails => {
+        // Update HTML elements with player information
+        document.getElementById("playerName").textContent = playerDetails.Name;
+        document.getElementById("playerAge").textContent = playerDetails.Age;
+        document.getElementById("playerGender").textContent = playerDetails.Gender;
+        document.getElementById("playerFN").textContent = playerDetails.Father;
+        document.getElementById("playerMN").textContent = playerDetails.Mother;
+        document.getElementById("playerRole").textContent = playerDetails.Role;
+        document.getElementById("playerBatH").textContent = playerDetails.BatH;
+        document.getElementById("playerBowlH").textContent = playerDetails.BowlH;
+        document.getElementById("playerGrade").textContent = playerDetails.Grade
+        document.getElementById("playerDOB").textContent = playerDetails.DateOfBirth;
+        document.getElementById("playerEmail").textContent = playerDetails.Email;
+        document.getElementById("playerPhone").textContent = playerDetails.Phone;
+      })
+      .catch(error => console.error('Error fetching player details:', error));
+
+    function goBackSearch() {
+      window.location.href = 'search_player.html';
+    }
+    function goBackHome() {
+      window.location.href = '../sam_homepage.html';
+    }
+  </script>
+</body>
+</html>

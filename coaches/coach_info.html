@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coach Information</title>
+  <style>
+    /* Add your own styles here */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: white;
+    }
+
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      max-width: 333px;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .coach-info {
+      margin-top: 20px;
+    }
+
+    .coach-info-item {
+      margin-bottom: 10px;
+    }
+
+    .search-back {
+      position: absolute;
+      bottom: 0;
+      left: 100;
+      transform: translateY(-500%);
+      text-align: center; /* Center the button horizontally */
+    }
+    .back-button {
+      position: absolute;
+      bottom: 0;
+      left: 100;
+      transform: translateY(-350%);
+      text-align: center; /* Center the button horizontally */
+    }
+
+    .search-back button,
+    .back-button button {
+      padding: 10px 20px;
+      background-color: black;
+      color: white;
+      border: 1px solid black;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      display: block; /* Ensure the button takes full width */
+      margin: 0 auto; /* Center the button horizontally */
+    }
+
+    .search-back button:hover,
+    .back-button button:hover {
+      background-color: white;
+      color: black;
+      transition: background-color 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Coach Information</h1>
+    <div class="coach-info">
+      <div class="coach-info-item">
+        <strong>Name:</strong>
+        <span id="coachName"></span>
+      </div>
+      <div class="coach-info-item">
+        <strong>Age:</strong>
+        <span id="coachAge"></span>
+      </div>
+      <div class="coach-info-item">
+        <strong>Gender:</strong>
+        <span id="coachGender"></span>
+      </div>
+      <div class="coach-info-item">
+        <strong>Grade:</strong>
+        <span id="coachGrade"></span>
+      </div>
+      <div class="coach-info-item">
+        <strong>Date of Birth:</strong>
+        <span id="coachDOB"></span>
+      </div>
+      <div class="coach-info-item">
+        <strong>Email:</strong>
+        <span id="coachEmail"></span>
+      </div>
+      <div class="coach-info-item">
+        <strong>Phone Number:</strong>
+        <span id="coachPhone"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- buttons -->
+  <div class="search-back">
+    <button onclick="goBackSearch()">Back to Search</button>
+  </div>
+  <div class="back-button">
+    <button onclick="goBackHome()">Back to Home</button>
+  </div>
+
+  <script>
+    // Retrieve coach name from URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const coachName = urlParams.get('coachName');
+
+    // Fetch coach details from the server using coachName
+    fetch(`coach_info.php?coachName=${encodeURIComponent(coachName)}`)
+      .then(response => response.json())
+      .then(coachDetails => {
+        // Update HTML elements with coach information
+        document.getElementById("coachName").textContent = coachDetails.Name;
+        document.getElementById("coachAge").textContent = coachDetails.Age;
+        document.getElementById("coachGender").textContent = coachDetails.Gender;
+        document.getElementById("coachGrade").textContent = coachDetails.Grade
+        document.getElementById("coachDOB").textContent = coachDetails.DateOfBirth;
+        document.getElementById("coachEmail").textContent = coachDetails.Email;
+        document.getElementById("coachPhone").textContent = coachDetails.Phone;
+      })
+      .catch(error => console.error('Error fetching coach details:', error));
+
+    function goBackSearch() {
+      window.location.href = 'search_coach.html';
+    }
+    function goBackHome() {
+      window.location.href = '../sam_homepage.html';
+    }
+  </script>
+</body>
+</html>

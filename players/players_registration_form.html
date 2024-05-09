@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Registration Form</title>
+    <style>
+        /* Add your own styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 50%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            border: 1px solid black;
+            border-radius: 5px;
+            transition: background-color 0.5s; /* Add transition effect for fill */
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: black;
+            color: white;
+        }
+
+        #message {
+            margin-top: 10px;
+            color: green;
+        }
+
+        /* Additional style for coach field */
+        #coachField {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Player Registration Form</h2>
+        <form name="PlayerForm" id="PlayerForm" action="players_registration_process.php" method="post">
+
+            <div class="form-group">
+                <label for="player_id">Player ID:</label>
+                <input type="number" id="player_id" name="PlayerID" required>
+            </div>
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="Name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="Age" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="Gender" required>
+                    <option value="">Select Option</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="father">Father's Name:</label>
+                <input type="text" id="father" name="Father">
+            </div>
+
+            <div class="form-group">
+                <label for="mother">Mother's Name:</label>
+                <input type="text" id="mother" name="Mother">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Present Address:</label>
+                <textarea type="text" id="address" name="PresentAddress" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="DateOfBirth" required>
+            </div>
+
+            <div class="form-group">
+                <label for="join_date">Join Date:</label>
+                <input type="date" id="join_date" name="JoinDate" required>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Role:</label>
+                <select id="role" name="Role" required>
+                    <option value="">Select Role</option>
+                    <option value="Batsman">Batsman</option>
+                    <option value="Bowler">Bowler</option>
+                    <option value="All-Rounder">All-rounder</option>
+                    <option value="Wicket-Keeper">Wicket-keeper</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="battingHandFormGroup" style="display: none;">
+                <label for="batting_hand">Batting Hand:</label>
+                <select id="batting_hand" name="Batting" required>
+                    <option value="">Select Batting Hand</option>
+                    <option value="Right">Right</option>
+                    <option value="Left">Left</option>
+                    
+                </select>
+            </div>
+
+            <div class="form-group" id="bowlingHandFormGroup" style="display: none;">
+                <label for="bowling_hand">Bowling Hand:</label>
+                <select id="bowling_hand" name="Bowling" required>
+                    <option value="">Select Bowling Hand</option>
+                    <option value="Right">Right</option>
+                    <option value="Left">Left</option>                   
+                    <option value="None">None</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="grade">Grade:</label>
+                <select id="grade" name="Grade" onchange="fetchCoaches(this.value)" required>
+                    <option value="">Select Grade</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </select>
+            </div>
+
+            <!-- Coach field -->
+            <div class="form-group" id="coachField">
+                <label for="coach_id">Coach:</label>
+                <select id="coach_id" name="CoachID" required>
+                    <option value="">Select Coach</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="Email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" name="Phone" pattern="[0-9]{11}" required>
+            </div>
+
+            <input type="submit" value="Submit">
+            <p id="message"></p>
+        </form>
+    </div>
+
+    <script>
+        // Set default value of join_date to current date
+        var currentDate = new Date().toISOString().split('T')[0];
+        document.getElementById("join_date").value = currentDate;
+
+        var roleSelect = document.getElementById("role");
+        var battingHandFormGroup = document.getElementById("battingHandFormGroup");
+        var bowlingHandFormGroup = document.getElementById("bowlingHandFormGroup");
+
+        // Add change event listener to role select box
+        roleSelect.addEventListener("change", function(event) {
+            var selectedRole = event.target.value;
+            if (selectedRole === "") {
+                // Hide both batting hand and bowling hand select boxes
+                battingHandFormGroup.style.display = "none";
+                bowlingHandFormGroup.style.display = "none";
+            } else if (selectedRole === "all-rounder") {
+                // Hide the bowling hand select box and show the batting hand select box
+                bowlingHandFormGroup.style.display = "block";
+                battingHandFormGroup.style.display = "block";
+            } else if (selectedRole === "wicket-keeper") {
+                bowlingHandFormGroup.style.display = "none";
+                battingHandFormGroup.style.display = "block";
+            } else {
+                // Show the bowling hand and batting hand select boxes
+                bowlingHandFormGroup.style.display = "block";
+                battingHandFormGroup.style.display = "block";
+            }
+        });
+
+        // Function to fetch coaches based on selected grade
+        function fetchCoaches(grade) {
+            var coachDropdown = document.getElementById("coach_id");
+            coachDropdown.innerHTML = "<option value=''>Select Coach</option>"; // Reset dropdown
+            if (grade) {
+                fetch("assign_coach.php?grade=" + grade)
+                    .then(response => response.json())
+                    .then(data => populateCoachDropdown(data));
+            } else {
+                // Hide coach field if no grade is selected
+                document.getElementById("coachField").style.display = "none";
+            }
+        }
+
+        // Function to populate coach dropdown with fetched data
+        function populateCoachDropdown(coaches) {
+            var coachDropdown = document.getElementById("coach_id");
+            // Clear previous options
+            coachDropdown.innerHTML = "";
+            // Add new options
+            coaches.forEach(function(coach) {
+                var option = document.createElement("option");
+                option.value = coach.id;
+                option.textContent = coach.name + " (" + coach.id + ")"; // Combine name and ID
+                coachDropdown.appendChild(option);
+            });
+            // Show the coach field
+            document.getElementById("coachField").style.display = "block";
+        }
+    </script>
+</body>
+</html>
