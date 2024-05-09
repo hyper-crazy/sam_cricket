@@ -19,7 +19,7 @@ if (isset($_GET['player_id']) && !empty($_GET['player_id']) && isset($_GET['form
     $Format = $_GET['format'];
 
     // Prepare and execute SQL query to fetch player's name
-    $stmt = $conn->prepare("SELECT Name FROM players WHERE PlayerID = ?");
+    $stmt = $conn->prepare("SELECT Name, Role FROM players WHERE PlayerID = ?");
     $stmt->bind_param("i", $PlayerId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -31,6 +31,7 @@ if (isset($_GET['player_id']) && !empty($_GET['player_id']) && isset($_GET['form
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $response['Name'] = $row['Name'];
+        $response['Role'] = $row['Role'];
     }
 
     // Close statement

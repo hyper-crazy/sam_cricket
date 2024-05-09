@@ -96,6 +96,11 @@
             </div>
 
             <div class="form-group">
+                <lebel for="role">Role:</lebel>
+                <input type="text" id="role" name="Role" readonly>
+            </div>
+
+            <div class="form-group">
                 <label for="match_no">Match No:</label>
                 <input type="number" id="match_no" name="MatchNo" readonly required>
             </div>
@@ -216,6 +221,7 @@
         // Function to display player name, match number, and innings
         function displayPlayerData(response) {
             var nameField = document.getElementById("name");
+            var roleField = document.getElementById("role");
             var matchNoField = document.getElementById("match_no");
             var inningsField = document.getElementById("innings");
 
@@ -223,6 +229,12 @@
                 nameField.value = response.Name;
             } else {
                 nameField.value = ''; // Clear name field if no name is found
+            }
+
+            if (response && response.Role) {
+                roleField.value = response.Role;
+            } else {
+                nameField.value = '';
             }
 
             if (response && response.MatchNo) {
