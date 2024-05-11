@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 $playerName = $_GET["playerName"];
 
 // SQL to fetch player details
-$sql = "SELECT Name, Age, Gender, Father, Mother, Role, Batting, Bowling,Grade, DateOfBirth, Email, Phone FROM players WHERE Name LIKE '%$playerName%'";
+$sql = "SELECT Name, Age, Gender, Father, Mother, Role, Batting, Bowling, Grade, DateOfBirth, Email, Phone FROM players WHERE Name LIKE '%$playerName%'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
